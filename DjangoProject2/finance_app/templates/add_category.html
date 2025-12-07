@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Категория қосу</title>
+</head>
+<body>
+<h1>Категория қосу</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сақтау</button>
+</form>
+<a href="{% url 'categories' %}">Категориялар тізіміне қайту</a>
+</body>
+</html>

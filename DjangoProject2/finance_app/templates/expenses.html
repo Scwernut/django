@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Шығындар</title>
+</head>
+<body>
+<h1>Шығындар</h1>
+<a href="{% url 'add_expense' %}">Шығын қосу</a>
+<ul>
+{% for exp in expenses %}
+    <li>{{ exp.user.username }} | {{ exp.category.name }} | {{ exp.amount }} тг | {{ exp.date }} | {{ exp.description }}</li>
+{% empty %}
+    <li>Шығындар жоқ</li>
+{% endfor %}
+</ul>
+<a href="{% url 'index' %}">Негізгі бетке қайту</a>
+</body>
+</html>

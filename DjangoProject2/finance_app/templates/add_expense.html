@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Шығын қосу</title>
+</head>
+<body>
+<h1>Шығын қосу</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сақтау</button>
+</form>
+<a href="{% url 'expenses' %}">Шығындар тізіміне қайту</a>
+</body>
+</html>

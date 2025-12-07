@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Қаржы бақылау</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        form { margin-bottom: 20px; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { margin-bottom: 5px; }
+        .message { padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        hr { margin: 30px 0; }
+    </style>
+</head>
+<body>
+
+<h1>Хабарламалар</h1>
+{% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li class="message {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<hr>
+
+<h1>Айлық деректер</h1>
+<form method="post" action="{% url 'add_record' %}">
+    {% csrf_token %}
+    {{ record_form.as_p }}
+    <button type="submit">Қосу</button>
+</form>
+<a href="{% url 'generate_random' %}">Кездейсоқ мәндер жасау</a>
+
+<ul>
+{% for r in records %}
+    <li>
+        {{ r.month }} : {{ r.value }} тг
+        <form method="post" action="{% url 'delete_record' r.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Өшіру</button>
+        </form>
+    </li>
+{% empty %}
+    <li>Деректер жоқ</li>
+{% endfor %}
+</ul>
+
+{% if graph %}
+<h2>График</h2>
+<img src="data:image/png;base64,{{ graph }}" alt="График" />
+{% endif %}
+
+<hr>
+
+<h1>Пайдаланушылар</h1>
+<form method="post" action="{% url 'add_user' %}">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    <button type="submit">Қосу</button>
+</form>
+
+<ul>
+{% for u in users %}
+    <li>
+        {{ u.username }} | {{ u.role }} | Баланс: {{ u.balance }} тг
+        <form method="post" action="{% url 'delete_user' u.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Өшіру</button>
+        </form>
+    </li>
+{% empty %}
+    <li>Пайдаланушылар жоқ</li>
+{% endfor %}
+</ul>
+<hr>
+
+<h1>Категориялар</h1>
+<form method="post" action="{% url 'add_category' %}">
+    {% csrf_token %}
+    {{ category_form.as_p }}
+    <button type="submit">Қосу</button>
+</form>
+
+
+<ul>
+{% for c in categories %}
+    <li>
+        {{ c.name }}
+        <form method="post" action="{% url 'delete_category' c.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Өшіру</button>
+        </form>
+    </li>
+{% empty %}
+    <li>Категориялар жоқ</li>
+{% endfor %}
+</ul>
+
+<hr>
+
+<h1>Шығындар</h1>
+<form method="post" action="{% url 'add_expense' %}">
+    {% csrf_token %}
+    {{ expense_form.as_p }}
+    <button type="submit">Қосу</button>
+</form>
+<ul>
+{% for e in expenses %}
+    <li>{{ e.user.username }} | {{ e.category.name }} | {{ e.amount }} тг | {{ e.date }} | {{ e.description }}</li>
+{% empty %}
+    <li>Шығындар жоқ</li>
+{% endfor %}
+</ul>
+
+
+</body>
+</html>
